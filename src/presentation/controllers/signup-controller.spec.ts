@@ -1,7 +1,7 @@
 import { SignUpController } from "./signup";
 
 describe("SignUp Controller", () => {
-  test("Should retorn 400 if no name is provided", () => {
+  test("Should retorn 400 if no name is provided", async () => {
     const sut = new SignUpController();
 
     const httpRequest = {
@@ -12,7 +12,7 @@ describe("SignUp Controller", () => {
       },
     };
 
-    const response = sut.handle(httpRequest);
+    const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(400);
   });
 });

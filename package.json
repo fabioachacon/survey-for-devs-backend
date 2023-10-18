@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest -w"
+    "test": "jest --watch --passWithNoTests"
   },
   "keywords": [],
   "author": "",

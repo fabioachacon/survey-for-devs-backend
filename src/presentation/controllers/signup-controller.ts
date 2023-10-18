@@ -1,9 +1,10 @@
 import { MissingParamError } from "../errors/MissingParamError";
 import { HttpRequest, HttpResponse } from "../protocols/http";
-import { getBadRequest } from "../helpers/mock-bad-request";
+import { getBadRequest } from "../helpers/bad-request";
 import { Controller } from "../protocols/controller";
 import { EmailValidor } from "../protocols/email-validator";
 import { InvalidParamError } from "../errors/InvalidParamError";
+import { ServerError } from "../errors/ServerError";
 
 export class SignUpController implements Controller {
   private readonly emailValidor: EmailValidor;
@@ -13,22 +14,29 @@ export class SignUpController implements Controller {
   }
 
   public async handle(request: HttpRequest): Promise<HttpResponse | undefined> {
-    const requiredFields = [
-      "name",
-      "email",
-      "password",
-      "passwordConfirmation",
-    ];
+    try {
+      const requiredFields = [
+        "name",
+        "email",
+        "password",
+        "passwordConfirmation",
+      ];
 
-    for (const field of requiredFields) {
-      if (!request.body[field]) {
-        return getBadRequest(new MissingParamError(field));
+      for (const field of requiredFields) {
+        if (!request.body[field]) {
+          return getBadRequest(new MissingParamError(field));
+        }
       }
-    }
 
-    const isValidEmail = this.emailValidor.isValid(request.body.email);
-    if (!isValidEmail) {
-      return getBadRequest(new InvalidParamError("email"));
+      const isValidEmail = this.emailValidor.isValid(request.body.email);
+      if (!isValidEmail) {
+        return getBadRequest(new InvalidParamError("email"));
+      }
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: new ServerError(),
+      };
     }
   }
 }

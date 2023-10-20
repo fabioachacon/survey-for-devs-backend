@@ -15,12 +15,7 @@ export class SignUpController implements Controller {
 
   public async handle(request: HttpRequest): Promise<HttpResponse | undefined> {
     try {
-      const requiredFields = [
-        "name",
-        "email",
-        "password",
-        "passwordConfirmation",
-      ];
+      const requiredFields = this.getRequiredFields();
 
       for (const field of requiredFields) {
         if (!request.body[field]) {
@@ -36,5 +31,9 @@ export class SignUpController implements Controller {
     } catch (error) {
       return httpErrors.serverError();
     }
+  }
+
+  private getRequiredFields() {
+    return ["name", "email", "password", "passwordConfirmation"];
   }
 }

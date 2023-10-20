@@ -4,7 +4,6 @@ import { httpErrors } from "../helpers/http";
 import { Controller } from "../protocols/controller";
 import { EmailValidor } from "../protocols/email-validator";
 import { InvalidParamError } from "../errors/InvalidParamError";
-import { ServerError } from "../errors/ServerError";
 
 export class SignUpController implements Controller {
   private readonly emailValidor: EmailValidor;
@@ -28,6 +27,10 @@ export class SignUpController implements Controller {
         const error = new InvalidParamError("email");
         return httpErrors.badRequest(error);
       }
+
+      if (this.isValidPasswordConfimation(request)) {
+        return httpErrors.badRequest(new Error("Invalid Password"));
+      }
     } catch (error) {
       return httpErrors.serverError();
     }
@@ -35,5 +38,9 @@ export class SignUpController implements Controller {
 
   private getRequiredFields() {
     return ["name", "email", "password", "passwordConfirmation"];
+  }
+
+  private isValidPasswordConfimation(request: HttpRequest) {
+    return request.body.password !== request.body.passwordConfirmation;
   }
 }

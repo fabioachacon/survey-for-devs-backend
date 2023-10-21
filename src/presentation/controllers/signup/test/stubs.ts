@@ -16,8 +16,8 @@ export class AddAccountStub implements AddAccount {
     return {
       id: "valid_id",
       name: "valid_name",
-      email: "",
-      password: "",
+      email: "valid_password",
+      password: "valid_password",
     };
   }
 }

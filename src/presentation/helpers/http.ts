@@ -1,7 +1,13 @@
 import { ServerError } from "../errors/ServerError";
 import { HttpResponse } from "../protocols/http";
 
-export const httpResponses = {
+interface Responses {
+  ok(body: any): HttpResponse;
+  badRequest(error: Error): HttpResponse;
+  serverError(): HttpResponse;
+}
+
+export const httpResponses: Responses = {
   ok(body: any): HttpResponse {
     return {
       statusCode: 200,

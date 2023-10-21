@@ -1,22 +1,30 @@
 import { InvalidParamError } from "../errors/InvalidParamError";
 import { MissingParamError } from "../errors/MissingParamError";
 import { ServerError } from "../errors/ServerError";
-import { EmailValidor } from "../protocols/email-validator";
 import { SignUpController } from "./signup-controller";
-import { EmailValidatorStub } from "./test/email-validator-stub";
+import {
+  EmailValidatorStub,
+  makeAddAccountStub,
+  makeEmailValidationStub,
+} from "./test/stubs";
 import { getMockedHttpRequestBody } from "./test/mock-http-request-body";
+import { AddAccount, AddAccountModel } from "../../domain/usecases/add-account";
+import { AccountModel } from "../../domain/models/account";
 
 type Sut = {
   sut: SignUpController;
   emailValidatorStub: EmailValidatorStub;
+  addAccountStub: AddAccount;
 };
 
 const getSut = (): Sut => {
-  const emailValidatorStub = new EmailValidatorStub();
+  const emailValidatorStub = makeEmailValidationStub();
+  const addAccountStub = makeAddAccountStub();
 
   return {
-    sut: new SignUpController(emailValidatorStub),
+    sut: new SignUpController(emailValidatorStub, addAccountStub),
     emailValidatorStub: emailValidatorStub,
+    addAccountStub: addAccountStub,
   };
 };
 
@@ -91,10 +99,14 @@ describe("SignUp Controller", () => {
     const { sut } = getSut();
 
     const request = getMockedHttpRequestBody();
+
+    request.body.passwordConfirmation = "any_confirmation";
     const response = await sut.handle(request);
 
     expect(response?.statusCode).toBe(400);
-    expect(response?.body).toEqual(new Error("Invalid Password"));
+    expect(response?.body).toEqual(
+      new InvalidParamError("passwordConfirmation")
+    );
   });
 
   test("Should call EmailValidator.isValid with correct email", async () => {
@@ -124,5 +136,20 @@ describe("SignUp Controller", () => {
 
     expect(response?.statusCode).toBe(500);
     expect(response?.body).toEqual(new ServerError());
+  });
+
+  test("Should call AddAcount.add with correct values", async () => {
+    const { sut, addAccountStub } = getSut();
+
+    const addSpy = jest.spyOn(addAccountStub, "add");
+
+    const request = getMockedHttpRequestBody();
+    sut.handle(request);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: "any_name",
+      email: "any_email",
+      password: "any_password",
+    });
   });
 });

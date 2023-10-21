@@ -12,7 +12,7 @@ export class EmailValidatorStub implements EmailValidor {
 }
 
 export class AddAccountStub implements AddAccount {
-  add(account: AddAccountModel): AccountModel {
+  async add(account: AddAccountModel): Promise<AccountModel> {
     return {
       id: "valid_id",
       name: "valid_name",

@@ -13,6 +13,7 @@ import {
   AddAccountModel,
 } from "../../../domain/usecases/add-account";
 import { AccountModel } from "../../../domain/models/account";
+import { resolve } from "path";
 
 type Sut = {
   sut: SignUpController;
@@ -159,9 +160,11 @@ describe("SignUp Controller", () => {
   test("Shoul return 500 if AddAcount.add throws an Exception", async () => {
     const { sut, addAccountStub } = getSut();
 
-    jest.spyOn(addAccountStub, "add").mockImplementationOnce(() => {
+    const mockImpl = async () => {
       throw new Error();
-    });
+    };
+
+    jest.spyOn(addAccountStub, "add").mockImplementationOnce(mockImpl);
 
     const request = getMockedHttpRequestBody();
     const response = await sut.handle(request);

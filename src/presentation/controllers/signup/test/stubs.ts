@@ -1,9 +1,9 @@
-import { AccountModel } from "../../../domain/models/account";
+import { AccountModel } from "../../../../domain/models/account";
 import {
   AddAccount,
   AddAccountModel,
-} from "../../../domain/usecases/add-account";
-import { EmailValidor } from "../../protocols/email-validator";
+} from "../../../../domain/usecases/add-account";
+import { EmailValidor } from "../../../protocols/email-validator";
 
 export class EmailValidatorStub implements EmailValidor {
   public isValid(_email: string) {

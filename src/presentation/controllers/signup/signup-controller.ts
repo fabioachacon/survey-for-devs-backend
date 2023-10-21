@@ -1,10 +1,10 @@
-import { MissingParamError } from "../errors/MissingParamError";
-import { HttpRequest, HttpResponse } from "../protocols/http";
-import { httpErrors } from "../helpers/http";
-import { Controller } from "../protocols/controller";
-import { EmailValidor } from "../protocols/email-validator";
-import { InvalidParamError } from "../errors/InvalidParamError";
-import { AddAccount } from "../../domain/usecases/add-account";
+import { MissingParamError } from "../../errors/MissingParamError";
+import { HttpRequest, HttpResponse } from "../../protocols/http";
+import { httpErrors } from "../../helpers/http";
+import { Controller } from "../../protocols/controller";
+import { EmailValidor } from "../../protocols/email-validator";
+import { InvalidParamError } from "../../errors/InvalidParamError";
+import { AddAccount } from "../../../domain/usecases/add-account";
 
 export class SignUpController implements Controller {
   private readonly emailValidor: EmailValidor;
@@ -25,12 +25,13 @@ export class SignUpController implements Controller {
         }
       }
 
-      const { name, email, password, passwordConfirmation } = request.body;
+      const { name, email } = request.body;
       if (!this.emailValidor.isValid(email)) {
         const error = new InvalidParamError("email");
         return httpErrors.badRequest(error);
       }
 
+      const { password, passwordConfirmation } = request.body;
       if (password !== passwordConfirmation) {
         return httpErrors.badRequest(
           new InvalidParamError("passwordConfirmation")

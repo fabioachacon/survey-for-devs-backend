@@ -3,9 +3,9 @@ import {
   AddAccount,
   AddAccountModel,
 } from "../../../../domain/usecases/add-account";
-import { EmailValidor } from "../../../protocols/email-validator";
+import { EmailValidator } from "../../../protocols/email-validator";
 
-export class EmailValidatorStub implements EmailValidor {
+export class EmailValidatorStub implements EmailValidator {
   public isValid(_email: string) {
     return true;
   }

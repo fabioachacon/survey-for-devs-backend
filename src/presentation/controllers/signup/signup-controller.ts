@@ -2,15 +2,15 @@ import { MissingParamError } from "../../errors/MissingParamError";
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 import { httpResponses } from "../../helpers/http";
 import { Controller } from "../../protocols/controller";
-import { EmailValidor } from "../../protocols/email-validator";
+import { EmailValidator } from "../../protocols/email-validator";
 import { InvalidParamError } from "../../errors/InvalidParamError";
 import { AddAccount } from "../../../domain/usecases/add-account";
 
 export class SignUpController implements Controller {
-  private readonly emailValidor: EmailValidor;
+  private readonly emailValidor: EmailValidator;
   private readonly addAccount: AddAccount;
 
-  constructor(emailValidor: EmailValidor, addAccount: AddAccount) {
+  constructor(emailValidor: EmailValidator, addAccount: AddAccount) {
     this.emailValidor = emailValidor;
     this.addAccount = addAccount;
   }
@@ -46,6 +46,8 @@ export class SignUpController implements Controller {
 
       return httpResponses.ok(account);
     } catch (error) {
+      console.error(error);
+
       return httpResponses.serverError();
     }
   }

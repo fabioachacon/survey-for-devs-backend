@@ -2,18 +2,16 @@ import { InvalidParamError } from "../../errors/InvalidParamError";
 import { MissingParamError } from "../../errors/MissingParamError";
 import { ServerError } from "../../errors/ServerError";
 import { SignUpController } from "./signup-controller";
+
 import {
   EmailValidatorStub,
   makeAddAccountStub,
   makeEmailValidationStub,
 } from "./test/stubs";
+
+import { AddAccount } from "../../../domain/usecases/add-account";
+
 import { getMockedHttpRequestBody } from "./test/mock-http-request-body";
-import {
-  AddAccount,
-  AddAccountModel,
-} from "../../../domain/usecases/add-account";
-import { AccountModel } from "../../../domain/models/account";
-import { resolve } from "path";
 
 type Sut = {
   sut: SignUpController;

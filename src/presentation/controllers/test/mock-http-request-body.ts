@@ -10,10 +10,10 @@ type RequestBody = {
 export const getMockedHttpRequestBody = (): RequestBody => {
   return {
     body: {
-      name: "jon",
-      email: "test@mail.com",
+      name: "any_name",
+      email: "any_email",
       password: "any_password",
-      passwordConfirmation: "any_confirmation",
+      passwordConfirmation: "any_password",
     },
   };
 };

@@ -29,4 +29,17 @@ describe("DbAddAccount", () => {
 
     expect(encryptSpy).toHaveBeenCalledWith("any_password");
   });
+
+  test("Should throw Encrypter.encrypt throws", async () => {
+    const { sut, encryperStub } = getSut();
+
+    jest.spyOn(encryperStub, "encrypt").mockImplementationOnce(async () => {
+      throw new Error();
+    });
+
+    const accoutData = getMockedAccountData();
+    const promise = sut.add(accoutData);
+
+    expect(promise).rejects.toThrow(new Error());
+  });
 });

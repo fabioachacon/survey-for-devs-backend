@@ -15,4 +15,15 @@ describe("BcryptAdapter", () => {
     sut.encrypt("value");
     expect(hashSpy).toHaveBeenCalledWith("value", 12);
   });
+
+  test("Should return a hashed value if encryption is successful", async () => {
+    const sut = getSut();
+
+    jest.spyOn(bcrypt, "hash").mockImplementationOnce(async () => {
+      return "hash";
+    });
+
+    const hash = await sut.encrypt("value");
+    expect(hash).toBe("hash");
+  });
 });

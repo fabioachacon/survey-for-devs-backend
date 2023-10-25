@@ -11,7 +11,7 @@ export class EncrypterStub implements Encrypter {
 export class AddAccountRepositoryStub implements AddAccountRepository {
   async add(account: AddAccountModel): Promise<AccountModel> {
     return {
-      id: "",
+      id: "valid_id",
       ...account,
     };
   }

@@ -71,4 +71,18 @@ describe("DbAddAccount", () => {
       password: "hashed_password",
     });
   });
+
+  test("Should return an account when successfuly add", async () => {
+    const { sut } = getSut();
+
+    const accountData = getMockedAccountData();
+    const account = await sut.add(accountData);
+
+    expect(account).toEqual({
+      id: "valid_id",
+      name: "valid_name",
+      email: "valid_email",
+      password: "hashed_password",
+    });
+  });
 });

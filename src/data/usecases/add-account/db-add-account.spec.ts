@@ -45,6 +45,19 @@ describe("DbAddAccount", () => {
     expect(promise).rejects.toThrow(new Error());
   });
 
+  test("Should throw AddAccountRepository.add throws", async () => {
+    const { sut, repositoryStub } = getSut();
+
+    jest.spyOn(repositoryStub, "add").mockImplementationOnce(async () => {
+      throw new Error();
+    });
+
+    const accountData = getMockedAccountData();
+    const promise = sut.add(accountData);
+
+    expect(promise).rejects.toThrow(new Error());
+  });
+
   test("Should call AddAccountRepository with correct values", async () => {
     const { sut, repositoryStub } = getSut();
 

@@ -1,5 +1,6 @@
-import { BcryptAdapter } from "./bcrypt-adapter";
 import bcrypt from "bcrypt";
+
+import { BcryptAdapter } from "./bcrypt-adapter";
 
 const getSut = () => {
   const SALT = 12;
@@ -25,5 +26,16 @@ describe("BcryptAdapter", () => {
 
     const hash = await sut.encrypt("value");
     expect(hash).toBe("hash");
+  });
+
+  test("Should throws if BcryptAdater.encrypt throws", async () => {
+    const sut = getSut();
+
+    jest.spyOn(bcrypt, "hash").mockImplementationOnce(async () => {
+      throw new Error();
+    });
+
+    const promise = sut.encrypt("value");
+    expect(promise).rejects.toThrow(new Error());
   });
 });

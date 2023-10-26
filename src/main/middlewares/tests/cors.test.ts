@@ -1,4 +1,4 @@
-import server from "../../config/server-config";
+import server from "../../config/server";
 import request from "supertest";
 
 describe("CORS middleware", () => {

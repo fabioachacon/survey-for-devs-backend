@@ -1,5 +1,5 @@
 import request from "supertest";
-import server from "../../config/server-config";
+import server from "../../config/server";
 
 describe("BodyParserMiddleware", () => {
   test("Should parse request body as json", async () => {

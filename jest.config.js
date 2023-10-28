@@ -5,6 +5,8 @@ module.exports = {
     },
     collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
     coverageDirectory: 'coverage',
-    testEnvironment: 'node'
+    testEnvironment: 'node',
+    globalTeardown: "<rootDir>/src/infra/database/mongodb/tests/configs/globalTeardown.ts",
+    globalSetup: "<rootDir>/src/infra/database/mongodb/tests/configs/globalSetup.ts",
     
   };

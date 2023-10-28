@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-export class MongoHelper {
+export class MongoManager {
   private static client: MongoClient;
 
   static async connect(uri: string) {
@@ -13,5 +13,13 @@ export class MongoHelper {
 
   static getCollection(name: string) {
     return this.client.db().collection(name);
+  }
+
+  static async clearCollection(name: string) {
+    await this.getCollection(name).deleteMany({});
+  }
+
+  static async dropCollection(name: string) {
+    await this.getCollection(name).drop();
   }
 }

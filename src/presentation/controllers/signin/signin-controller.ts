@@ -13,13 +13,15 @@ export class SignInController implements Controller {
   }
 
   async handle(request: HttpRequest): Promise<HttpResponse | undefined> {
-    if (!request.body.email) {
+    const { email, password } = request.body;
+
+    if (!email) {
       return httpResponses.badRequest(new MissingParamError("email"));
-    } else if (!this.emailValidator.isValid(request.body.email)) {
+    } else if (!this.emailValidator.isValid(email)) {
       return httpResponses.badRequest(new InvalidParamError("email"));
     }
 
-    if (!request.body.password) {
+    if (!password) {
       return httpResponses.badRequest(new MissingParamError("password"));
     }
   }

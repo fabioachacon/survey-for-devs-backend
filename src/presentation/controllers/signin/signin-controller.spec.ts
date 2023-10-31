@@ -42,7 +42,24 @@ describe("SignInController", () => {
     );
   });
 
-  test("Should call EmailValidator.validate", async () => {
+  test("Should return 400 if EmailValidator.validate is called with an invalid email", async () => {
+    const { sut, emailValidatorStub } = getSut();
+
+    const isValidSpy = jest.spyOn(emailValidatorStub, "isValid");
+    isValidSpy.mockReturnValueOnce(false);
+
+    const request = {
+      body: {
+        password: "any_password",
+        email: "any@mail.com",
+      },
+    };
+
+    const response = await sut.handle(request);
+    expect(response?.statusCode).toBe(400);
+  });
+
+  test("Should call EmailValidator.validate with a value", async () => {
     const { sut, emailValidatorStub } = getSut();
 
     const isValidSpy = jest.spyOn(emailValidatorStub, "isValid");

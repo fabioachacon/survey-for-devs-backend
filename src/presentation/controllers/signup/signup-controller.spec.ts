@@ -3,15 +3,12 @@ import { MissingParamError } from "../../errors/MissingParamError";
 import { ServerError } from "../../errors/ServerError";
 import { SignUpController } from "./signup-controller";
 
-import {
-  EmailValidatorStub,
-  makeAddAccountStub,
-  makeEmailValidationStub,
-} from "./test/stubs";
+import { makeAddAccountStub } from "./test/stubs";
 
 import { AddAccount } from "../../../domain/usecases/add-account";
 
 import { getMockedHttpRequestBody } from "./test/mock-http-request-body";
+import { EmailValidatorStub, makeEmailValidationStub } from "../test/stubs";
 
 type Sut = {
   sut: SignUpController;
@@ -137,7 +134,7 @@ describe("SignUp Controller", () => {
     const response = await sut.handle(request);
 
     expect(response?.statusCode).toBe(500);
-    expect(response?.body).toEqual(new ServerError());
+    expect(response?.body).toEqual(new ServerError(""));
   });
 
   test("Should call AddAcount.add with correct values", async () => {
@@ -168,7 +165,7 @@ describe("SignUp Controller", () => {
     const response = await sut.handle(request);
 
     expect(response?.statusCode).toBe(500);
-    expect(response?.body).toEqual(new ServerError());
+    expect(response?.body).toEqual(new ServerError(""));
   });
 
   test("Should return 200 if valid data is provided", async () => {

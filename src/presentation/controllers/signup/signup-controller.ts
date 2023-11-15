@@ -39,8 +39,9 @@ export class SignUpController implements Controller {
         return httpResponses.ok(account);
       }
     } catch (error) {
-      console.error(error);
-      return httpResponses.serverError();
+      if (error instanceof Error) {
+        return httpResponses.serverError(error.stack || "");
+      }
     }
   }
 

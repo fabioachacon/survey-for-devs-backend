@@ -90,4 +90,24 @@ describe("SignInController", () => {
     await sut.handle(request);
     expect(isValidSpy).toHaveReturnedWith(true);
   });
+
+  test("Should return 500 if EmailValidator throws", async () => {
+    const { sut, emailValidatorStub } = getSut();
+
+    jest.spyOn(emailValidatorStub, "isValid").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const request = {
+      body: {
+        password: "any_password",
+        email: "any@mail.com",
+      },
+    };
+
+    const response = await sut.handle(request);
+    expect(response).toEqual(
+      httpResponses.serverError(new Error().stack || "")
+    );
+  });
 });

@@ -4,7 +4,7 @@ import { HttpResponse } from "../protocols/http";
 interface Responses {
   ok(body: any): HttpResponse;
   badRequest(error: Error): HttpResponse;
-  serverError(): HttpResponse;
+  serverError(stack: string): HttpResponse;
 }
 
 export const httpResponses: Responses = {
@@ -20,10 +20,10 @@ export const httpResponses: Responses = {
       body: error,
     };
   },
-  serverError(): HttpResponse {
+  serverError(stack: string): HttpResponse {
     return {
       statusCode: 500,
-      body: new ServerError(),
+      body: new ServerError(stack),
     };
   },
 };

@@ -120,4 +120,18 @@ describe("SignInController", () => {
     await sut.handle(request);
     expect(authSpy).toHaveBeenCalledWith("any@mail.com", "any_password");
   });
+
+  test("Should return 401 if invalid credentials are provided", async () => {
+    const { sut, authenticationStub } = getSut();
+
+    jest
+      .spyOn(authenticationStub, "auth")
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)));
+
+    const requestBody = getMockedRequestBody();
+    const request = makeBody(requestBody);
+
+    const response = await sut.handle(request);
+    expect(response).toEqual(httpResponses.unauthorized());
+  });
 });

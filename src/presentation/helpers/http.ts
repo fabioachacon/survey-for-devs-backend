@@ -1,10 +1,12 @@
 import { ServerError } from "../errors/ServerError";
+import { Unauthorized } from "../errors/Unauthorized";
 import { HttpResponse } from "../protocols/http";
 
 interface Responses {
   ok(body: any): HttpResponse;
   badRequest(error: Error): HttpResponse;
   serverError(stack: string): HttpResponse;
+  unauthorized(): HttpResponse;
 }
 
 export const httpResponses: Responses = {
@@ -24,6 +26,12 @@ export const httpResponses: Responses = {
     return {
       statusCode: 500,
       body: new ServerError(stack),
+    };
+  },
+  unauthorized(): HttpResponse {
+    return {
+      statusCode: 401,
+      body: new Unauthorized(),
     };
   },
 };

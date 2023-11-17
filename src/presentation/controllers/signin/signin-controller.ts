@@ -30,10 +30,11 @@ export class SignInController implements Controller {
       }
 
       const token = await this.authentication.auth(email, password);
-
       if (!token) {
         return httpResponses.unauthorized();
       }
+
+      return httpResponses.ok({ token });
     } catch (error) {
       return httpResponses.serverError(error);
     }

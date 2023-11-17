@@ -134,4 +134,22 @@ describe("SignInController", () => {
     const response = await sut.handle(request);
     expect(response).toEqual(httpResponses.unauthorized());
   });
+
+  test("Should return 500 if Authentication throws", async () => {
+    const { sut, authenticationStub } = getSut();
+
+    jest
+      .spyOn(authenticationStub, "auth")
+      .mockReturnValueOnce(
+        new Promise((_resolve, reject) => reject(new Error()))
+      );
+
+    const requestBody = getMockedRequestBody();
+    const request = makeBody(requestBody);
+
+    const response = await sut.handle(request);
+    expect(response).toEqual(
+      httpResponses.serverError(new Error().stack || "")
+    );
+  });
 });

@@ -152,4 +152,18 @@ describe("SignInController", () => {
       httpResponses.serverError(new Error().stack || "")
     );
   });
+
+  test("Should return 200 if valid credentials are provided", async () => {
+    const { sut } = getSut();
+
+    const requestBody = getMockedRequestBody();
+    const request = makeBody(requestBody);
+
+    const response = await sut.handle(request);
+    expect(response).toEqual(
+      httpResponses.ok({
+        token: "token",
+      })
+    );
+  });
 });

@@ -5,18 +5,31 @@ import { Controller } from "../../protocols/controller";
 import { EmailValidator } from "../../protocols/email-validator";
 import { InvalidParamError } from "../../errors/InvalidParamError";
 import { AddAccount } from "../../../domain/usecases/add-account";
+import { Validation } from "../../protocols/validation";
 
 export class SignUpController implements Controller {
   private readonly emailValidor: EmailValidator;
   private readonly addAccount: AddAccount;
+  private readonly validation: Validation;
 
-  constructor(emailValidor: EmailValidator, addAccount: AddAccount) {
+  constructor(
+    emailValidor: EmailValidator,
+    addAccount: AddAccount,
+    validation: Validation
+  ) {
     this.emailValidor = emailValidor;
     this.addAccount = addAccount;
+    this.validation = validation;
   }
 
   public async handle(request: HttpRequest): Promise<HttpResponse | undefined> {
     try {
+      const error = this.validation.validate(request.body);
+
+      if (error) {
+        return httpResponses.badRequest(error);
+      }
+
       const requestBody = request.body;
 
       const field = this.hasRequiredFields(requestBody);

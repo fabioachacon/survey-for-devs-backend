@@ -8,22 +8,27 @@ import { makeAddAccountStub } from "./test/stubs";
 import { AddAccount } from "../../../domain/usecases/add-account";
 
 import { getMockedHttpRequestBody } from "./test/mock-http-request-body";
-import { EmailValidatorStub, makeEmailValidationStub } from "../test/stubs";
+import {
+  EmailValidatorStub,
+  makeEmailValidationStub,
+  makeValidationStub,
+} from "../test/stubs";
+import { httpResponses } from "../../helpers/http";
 
-type Sut = {
-  sut: SignUpController;
-  emailValidatorStub: EmailValidatorStub;
-  addAccountStub: AddAccount;
-};
-
-const getSut = (): Sut => {
+const getSut = () => {
   const emailValidatorStub = makeEmailValidationStub();
   const addAccountStub = makeAddAccountStub();
+  const validationStub = makeValidationStub();
 
   return {
-    sut: new SignUpController(emailValidatorStub, addAccountStub),
+    sut: new SignUpController(
+      emailValidatorStub,
+      addAccountStub,
+      validationStub
+    ),
     emailValidatorStub: emailValidatorStub,
     addAccountStub: addAccountStub,
+    validationStub,
   };
 };
 
@@ -181,5 +186,16 @@ describe("SignUp Controller", () => {
       email: "valid_password",
       password: "valid_password",
     });
+  });
+
+  test("Should call Validataion with correct value", async () => {
+    const { sut, validationStub } = getSut();
+
+    const validatedSpy = jest.spyOn(validationStub, "validate");
+
+    const request = getMockedHttpRequestBody();
+
+    await sut.handle(request);
+    expect(validatedSpy).toHaveBeenCalledWith(request.body);
   });
 });

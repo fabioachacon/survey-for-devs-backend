@@ -1,3 +1,3 @@
 export interface Validation {
-  validate(value: any): Error | null;
+  validate(value: any): Error | null | undefined;
 }

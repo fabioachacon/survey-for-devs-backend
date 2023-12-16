@@ -1,8 +1,6 @@
 import { HttpRequest, HttpResponse } from "../../protocols/http";
 import { httpResponses } from "../../helpers/http";
 import { Controller } from "../../protocols/controller";
-import { EmailValidator } from "../../protocols/email-validator";
-import { InvalidParamError } from "../../errors/InvalidParamError";
 import { AddAccount } from "../../../domain/usecases/add-account";
 import { Validation } from "../../protocols/validation";
 
@@ -17,14 +15,14 @@ export class SignUpController implements Controller {
 
   public async handle(request: HttpRequest): Promise<HttpResponse | undefined> {
     try {
-      const requestBody = request.body;
+      const body = request.body;
+      const error = this.validation.validate(body);
 
-      const error = this.validation.validate(requestBody);
       if (error) {
         return httpResponses.badRequest(error);
       }
 
-      const account = await this.createAccount(requestBody);
+      const account = await this.createAccount(body);
       if (account) {
         return httpResponses.ok(account);
       }

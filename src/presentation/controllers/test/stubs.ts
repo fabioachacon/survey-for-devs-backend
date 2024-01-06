@@ -14,15 +14,15 @@ export class EmailValidatorStub implements EmailValidator {
   }
 }
 
+export const makeEmailValidationStub = () => {
+  return new EmailValidatorStub();
+};
+
 export class AuthenticationStub implements Authentication {
   async auth(email: string, password: string): Promise<string | null> {
     return "token";
   }
 }
-
-export const makeEmailValidationStub = () => {
-  return new EmailValidatorStub();
-};
 
 export const makeAuthenticationStub = () => {
   return new AuthenticationStub();

@@ -3,7 +3,6 @@ import { ServerError } from "../../errors/ServerError";
 import { SignUpController } from "./signup-controller";
 
 import { makeAddAccountStub } from "./test/stubs";
-
 import { getMockedHttpRequestBody } from "./test/mock-http-request-body";
 import { makeValidationStub } from "../test/stubs";
 import { httpResponses } from "../../helpers/http";

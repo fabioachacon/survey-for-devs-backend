@@ -1,3 +1,0 @@
-describe("EmailValidation", () => {
-  test("", () => {});
-});

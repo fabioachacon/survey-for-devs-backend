@@ -117,8 +117,13 @@ describe("SignInController", () => {
     const requestBody = getMockedRequestBody();
     const request = makeBody(requestBody);
 
+    const credentials = {
+      email: "any@mail.com",
+      password: "any_password",
+    };
+
     await sut.handle(request);
-    expect(authSpy).toHaveBeenCalledWith("any@mail.com", "any_password");
+    expect(authSpy).toHaveBeenCalledWith(credentials);
   });
 
   test("Should return 401 if invalid credentials are provided", async () => {

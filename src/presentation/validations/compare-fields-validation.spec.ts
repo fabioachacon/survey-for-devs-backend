@@ -4,9 +4,7 @@ import { CompareFieldsValidation } from "./compared-fields-validation";
 const getSut = () => {
   const sut = new CompareFieldsValidation("field", "fieldToCompare");
 
-  return {
-    sut,
-  };
+  return { sut };
 };
 
 describe("CompareFieldsValidation", () => {

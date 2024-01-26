@@ -3,14 +3,20 @@ import { ValidationStub } from "./tests/stub";
 import { ValidationComposite } from "./validation-composite";
 
 const getSut = () => {
-  const sut = new ValidationComposite([new ValidationStub()]);
+  const validatonStub = [new ValidationStub(), new ValidationStub()];
 
-  return { sut };
+  const sut = new ValidationComposite(validatonStub);
+
+  return { sut, validatonStub };
 };
 
 describe("ValidationComposite", () => {
-  test("Should return an Error if any validation fails", () => {
-    const { sut } = getSut();
+  test("Should return an Error if any validatio n fails", () => {
+    const { sut, validatonStub } = getSut();
+
+    jest
+      .spyOn(validatonStub[0], "validate")
+      .mockReturnValueOnce(new MissingParamError("field"));
 
     const error = sut.validate({ field: "any_value" });
 

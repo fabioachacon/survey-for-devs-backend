@@ -1,4 +1,7 @@
-import { Authentication } from "../../../domain/usecases/authentication";
+import {
+  AuthParams,
+  Authentication,
+} from "../../../domain/usecases/authentication";
 import { EmailValidator } from "../../protocols/email-validator";
 import { Validation } from "../../protocols/validation";
 
@@ -19,7 +22,7 @@ export const makeEmailValidationStub = () => {
 };
 
 export class AuthenticationStub implements Authentication {
-  async auth(email: string, password: string): Promise<string | null> {
+  async auth(authParams: AuthParams): Promise<string | null> {
     return "token";
   }
 }

@@ -1,5 +1,5 @@
-import { AddAccountRepository } from "../../../protocols/add-account-repository";
-import { Encrypter } from "../../../protocols/encrypter";
+import { AddAccountRepository } from "../../../protocols/database/add-account-repository";
+import { Encrypter } from "../../../protocols/encryption/encrypter";
 import { AddAccountModel, AccountModel } from "../db-add-account-protocols";
 
 export class EncrypterStub implements Encrypter {

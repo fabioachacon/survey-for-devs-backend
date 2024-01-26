@@ -14,6 +14,6 @@ export const makeEmailValidatorStub = () => {
 
 export class ValidationStub implements Validation {
   validate(value: any): Error | null | undefined {
-    return new MissingParamError("field");
+    return new Error("any");
   }
 }

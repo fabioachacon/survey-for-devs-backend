@@ -1,3 +1,9 @@
+import { Credentials } from "../models/credentials";
+
+export type AuthParams = {
+  email: string;
+  password: string;
+};
 export interface Authentication {
-  auth(email: string, password: string): Promise<string | null>;
+  auth(credentials: Credentials): Promise<string | null>;
 }

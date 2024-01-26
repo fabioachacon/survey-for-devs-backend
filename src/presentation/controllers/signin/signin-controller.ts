@@ -29,7 +29,7 @@ export class SignInController implements Controller {
         return httpResponses.badRequest(new MissingParamError("password"));
       }
 
-      const token = await this.authentication.auth(email, password);
+      const token = await this.authentication.auth({ email, password });
       if (!token) {
         return httpResponses.unauthorized();
       }
